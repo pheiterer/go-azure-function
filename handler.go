@@ -16,12 +16,8 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, message)
 }
 
-func postExample(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "POST" {
-		fmt.Fprintf(w, "This is a POST request\n")
-	} else {
-		fmt.Fprintf(w, "This is a GET request\n")
-	}
+func healthCheckHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Healthy")
 }
 
 func main() {
@@ -29,8 +25,8 @@ func main() {
 	if val, ok := os.LookupEnv("FUNCTIONS_CUSTOMHANDLER_PORT"); ok {
 		listenAddr = ":" + val
 	}
-	http.HandleFunc("/", helloHandler)
-	http.HandleFunc("/api/PostExample", postExample)
+	http.HandleFunc("/api/HttpExample/Hello", helloHandler)
+	http.HandleFunc("/api/HttpExample/HealthCheck", healthCheckHandler)
 
 	log.Printf("About to listen on %s. Go to https://127.0.0.1%s/", listenAddr, listenAddr)
 	log.Fatal(http.ListenAndServe(listenAddr, nil))
